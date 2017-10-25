@@ -12,6 +12,7 @@
     ui.includeJavascript("uicommons", "services/conceptService.js")
     ui.includeJavascript("uicommons", "services/drugService.js")
     ui.includeJavascript("uicommons", "services/encounterService.js")
+    ui.includeJavascript("uicommons", "services/encounterRoleService.js")
     ui.includeJavascript("uicommons", "services/orderService.js")
     ui.includeJavascript("uicommons", "services/session.js")
     ui.includeJavascript("uicommons", "directives/select-concept-from-list.js")
@@ -19,10 +20,13 @@
     ui.includeJavascript("uicommons", "directives/select-drug.js")
     ui.includeJavascript("orderentryui", "order-model.js")
     ui.includeJavascript("orderentryui", "order-entry.js")
-    ui.includeJavascript("orderentryui", "drugOrders.js")
+    ui.includeJavascript("orderentryui", "drug-orders.js")
+    ui.includeJavascript("orderentryui", "select.min.js")
 
     ui.includeCss("uicommons", "ngDialog/ngDialog.min.css")
     ui.includeCss("orderentryui", "drugOrders.css")
+    ui.includeCss("orderentryui", "select.min.css")
+    ui.includeCss("orderentryui", "selectize.default.min.css")
 %>
 <script type="text/javascript">
     var breadcrumbs = [
@@ -34,6 +38,27 @@
     window.OpenMRS = window.OpenMRS || {};
     window.OpenMRS.drugOrdersConfig = ${ jsonConfig };
 </script>
+<style>
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+    /* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+    .select-box {
+      background: #fff;
+      position: relative;
+      z-index: 1;
+    }
+    .alert-info.positioned {
+      margin-top: 1em;
+      position: relative;
+      z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+    }
+</style>
 
 ${ ui.includeFragment("appui", "messages", [ codes: [
         "orderentryui.pastAction.REVISE",
@@ -48,7 +73,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
             <li ng-repeat="setting in careSettings" class="ui-state-default ui-corner-top"
                 ng-class="{ 'ui-tabs-active': setting == careSetting, 'ui-state-active': setting == careSetting }">
                     <a class="ui-tabs-anchor" ng-click="setCareSetting(setting)">
-                        {{ setting | omrs.display }}
+                        {{ setting | omrsDisplay }}
                     </a>
             </li>
         </ul>
@@ -143,7 +168,17 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                         Signing as ${ ui.format(sessionContext.currentProvider) } on (auto-generated timestamp)
                         <img ng-show="loading" src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
                     </div>
-                    <button class="confirm right" ng-disabled="loading" ng-click="signAndSaveDraftDrugOrders()">Sign and Save</button>
+                </div>
+                <div class="actions">
+                        <ui-select ng-model="encounterRole.selected" theme="selectize" style="width: 300px;" ng-disabled="encounterRole.loading">
+                                            <ui-select-match placeholder="placed as...">{{ \$select.selected.display }}</ui-select-match>
+                                            <ui-select-choices repeat="role in encounterRoles | filter: \$select.search">
+                                                <span ng-bind-html="role.trustedDisplay | highlight: \$select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                </div>
+                <div class="actions">
+                    <button class="confirm right" ng-disabled="loading || !encounterRole.selected" ng-click="signAndSaveDraftDrugOrders()">Sign and Save</button>
                     <button class="cancel" ng-click="cancelAllDraftDrugOrders()">
                         {{ draftDrugOrders.length > 1 ? "Discard All" : "Discard" }}
                     </button>

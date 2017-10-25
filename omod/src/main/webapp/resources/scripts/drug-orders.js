@@ -1,5 +1,6 @@
-angular.module('drugOrders', ['orderService', 'encounterService', 'uicommons.filters', 'uicommons.widget.select-concept-from-list',
-    'uicommons.widget.select-order-frequency', 'uicommons.widget.select-drug', 'session', 'orderEntry']).
+angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRoleService', 'uicommons.filters',
+    'uicommons.widget.select-concept-from-list', 'uicommons.widget.select-order-frequency',
+    'uicommons.widget.select-drug', 'session', 'orderEntry', 'ui.select']).
 
     config(function($locationProvider) {
         $locationProvider.html5Mode({
@@ -56,9 +57,12 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'uicommons.fil
         }
     }]).
 
-    controller('DrugOrdersCtrl', ['$scope', '$window', '$location', '$timeout', 'OrderService', 'EncounterService', 'SessionInfo', "OrderEntryService",
-        function($scope, $window, $location, $timeout, OrderService, EncounterService, SessionInfo, OrderEntryService) {
-
+    controller('DrugOrdersCtrl', ['$scope', '$window', '$location', '$timeout', 'OrderService', 'EncounterService',
+        'EncounterRoleService', 'SessionInfo', 'OrderEntryService', '$sce', function($scope, $window, $location, $timeout,
+                         OrderService, EncounterService, EncounterRoleService, SessionInfo, OrderEntryService, $sce) {
+            $scope.encounterRole = {
+                selected: undefined,
+            };
             var orderContext = {};
             SessionInfo.get().$promise.then(function(info) {
                 orderContext.provider = info.currentProvider;
@@ -199,6 +203,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'uicommons.fil
                 var encounterContext = {
                     patient: config.patient,
                     encounterType: config.drugOrderEncounterType,
+                    encounterRole: $scope.encounterRole.selected,
                     location: null, // TODO
                     visit: config.visit
                 };
@@ -226,6 +231,17 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'uicommons.fil
                 $scope.newDraftDrugOrder = activeOrder.createRevisionOrder();
             }
 
+            $scope.encounterRoles = [];
+            $scope.encounterRole.loading = true;
+            (function() {
+                EncounterRoleService.getEncounterRoles().then(function(roles) {
+                    $scope.encounterRoles = roles.map(function(role) {
+                        role.trustedDisplay = $sce.trustAsHtml(role.display);
+                        return role;
+                    });
+                    $scope.encounterRole.loading = false;
+                });
+            })();
 
             // events
 

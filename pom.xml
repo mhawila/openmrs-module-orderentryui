@@ -4,7 +4,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>orderentryui</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Order Entry UI Module</name>
 	<description>Drug Order Entry for OpenMRS 2.x</description>
@@ -33,7 +33,7 @@
 	</modules>
 	
 	<properties>
-		<openMRSVersion>1.10.0</openMRSVersion>
+		<openMRSVersion>1.11.6</openMRSVersion>
         <distro.groupId>org.openmrs.distro</distro.groupId>
         <distro.artifactId>referenceapplication</distro.artifactId>
         <distro.version>2.2</distro.version>
