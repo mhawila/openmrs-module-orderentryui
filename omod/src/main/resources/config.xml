@@ -27,6 +27,11 @@
         </require_module>
     </require_modules>
 
+    <globalProperty>
+        <property>${project.parent.artifactId}.orderFrequenciesConceptSetUuid</property>
+        <description>The concept UUID of the concept set that groups all the order frequency concepts</description>
+    </globalProperty>
+
     <!-- Module Activator -->
 	<activator>${project.parent.groupId}.${project.parent.artifactId}.OrderEntryUiActivator</activator>
 	
