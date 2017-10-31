@@ -99,7 +99,7 @@
         $.extend(this, obj);
     }
 
-    OpenMRS.createEmptyDraftOrder = function(orderContext) {
+    OpenMRS.createEmptyDraftDrugOrder = function(orderContext) {
         var obj = $.extend({}, {
             editing: true,
             action: 'NEW',
@@ -152,7 +152,7 @@
         },
 
         createRevisionOrder: function(orderContext) {
-            var draft = OpenMRS.createEmptyDraftOrder(this.careSetting);
+            var draft = OpenMRS.createEmptyDraftDrugOrder(this.careSetting);
             var copyProperties = _.pick(this,
                 'commentToFulfiller', 'drug', 'dosingType', 'numRefills', 'quantity', 'quantityUnits', 'dose',
                 'doseUnits', 'frequency', 'asNeeded', 'asNeededCondition', 'route', 'duration', 'durationUnits',
@@ -200,6 +200,20 @@
         });
     };
 
-
+    OpenMRS.createEmptyDraftTestOrder = function(orderContext) {
+        var obj = $.extend({}, {
+            editing: true,
+            action: 'NEW',
+            type: 'testorder',
+            careSetting: orderContext.careSetting,
+            orderer: orderContext.provider,
+            commentToFulfiller: '',
+            concept: '',
+            specimen: '',
+            scheduledDate: new Date(),
+            previousOrder: null
+        });
+        return new OpenMRS.TestOrderModel(obj);
+    }
 })(jQuery, _, window.OpenMRS = window.OpenMRS||{});
 

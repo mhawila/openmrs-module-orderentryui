@@ -31,6 +31,10 @@
         <property>${project.parent.artifactId}.orderFrequenciesConceptSetUuid</property>
         <description>The concept UUID of the concept set that groups all the order frequency concepts</description>
     </globalProperty>
+    <globalProperty>
+        <property>${project.parent.artifactId}.testOrderConceptSetUuid</property>
+        <description>The concept UUID of the concept set that groups all the orderable test concepts</description>
+    </globalProperty>
 
     <!-- Module Activator -->
 	<activator>${project.parent.groupId}.${project.parent.artifactId}.OrderEntryUiActivator</activator>

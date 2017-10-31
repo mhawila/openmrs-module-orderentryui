@@ -127,7 +127,8 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
         }
     }])
 
-    .factory("OrderEntryService", [ "$rootScope", "$q", "Order", "Encounter", "SessionInfo", function($rootScope, $q, Order, Encounter, SessionInfo) {
+    .factory("OrderEntryService", [ "$rootScope", "$q", "Order", "Encounter", "SessionInfo", '$resource',
+        function($rootScope, $q, Order, Encounter, SessionInfo, $resource) {
 
         function replaceWithUuids(obj, props) {
             var replaced = angular.extend({}, obj);
@@ -144,6 +145,11 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
         }
 
         return {
+            getOrderableTests: function(params) {
+                return $resource("/" + OPENMRS_CONTEXT_PATH  + "/orderentryui/orderable/search.action")
+                    .query(params).$promise;
+            },
+
             getOrdersForEncounter: function(encounterRef) {
                 var ret = [];
                 var deferred = $q.defer();

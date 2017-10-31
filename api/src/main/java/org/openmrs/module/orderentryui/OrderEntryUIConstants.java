@@ -15,4 +15,5 @@ package org.openmrs.module.orderentryui;
 
 public class OrderEntryUIConstants {
     public static final String GP_ORDER_FREQUENCIES_CONCEPT_SET_UUID = "orderentryui.orderFrequenciesConceptSetUuid";
+    public static final String GP_TEST_ORDER_CONCEPT_SET_UUID = "orderentryui.testOrderConceptSetUuid";
 }

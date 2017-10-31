@@ -1,0 +1,10 @@
+[
+    {
+        "id": "orderentryui.patientDashboard.activeTestOrders",
+        "extensionPointId": "patientDashboard.secondColumnFragments",
+        "extensionParams": {
+            "provider": "orderentryui",
+            "fragment": "patientdashboard/activeTestOrders"
+        }
+    }
+]

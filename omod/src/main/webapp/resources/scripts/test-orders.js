@@ -1,4 +1,4 @@
-angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRoleService', 'uicommons.filters',
+angular.module('testOrders', ['orderService', 'encounterService', 'encounterRoleService', 'uicommons.filters',
     'uicommons.widget.select-concept-from-list', 'uicommons.widget.select-order-frequency',
     'uicommons.widget.select-drug', 'session', 'orderEntry', 'ui.select']).
 
@@ -57,7 +57,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
         }
     }]).
 
-    controller('DrugOrdersCtrl', ['$scope', '$window', '$location', '$timeout', 'OrderService', 'EncounterService',
+    controller('TestOrdersCtrl', ['$scope', '$window', '$location', '$timeout', 'OrderService', 'EncounterService',
         'EncounterRoleService', 'SessionInfo', 'OrderEntryService', '$sce', function($scope, $window, $location, $timeout,
                          OrderService, EncounterService, EncounterRoleService, SessionInfo, OrderEntryService, $sce) {
             $scope.encounterRole = {
@@ -66,10 +66,9 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             var orderContext = {};
             SessionInfo.get().$promise.then(function(info) {
                 orderContext.provider = info.currentProvider;
-                $scope.newDraftDrugOrder = OpenMRS.createEmptyDraftDrugOrder(orderContext);
+                $scope.newDraftTestOrder = OpenMRS.createEmptyDraftTestOrder(orderContext);
             });
 
-            // TODO changing dosingType of a draft order should reset defaults (and discard non-defaulted properties)
 
             function loadExistingOrders() {
                 $scope.activeDrugOrders = { loading: true };
@@ -109,7 +108,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
 
             $scope.activeDrugOrders = { loading: true };
             $scope.pastDrugOrders = { loading: true };
-            $scope.draftDrugOrders = [];
+            $scope.draftTestOrders = [];
             $scope.dosingTypes = OpenMRS.dosingTypes;
 
             var config = OpenMRS.drugOrdersConfig;
@@ -141,8 +140,8 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                 $scope.careSetting = careSetting;
                 orderContext.careSetting = $scope.careSetting;
                 loadExistingOrders();
-                $scope.draftDrugOrders = [];
-                $scope.newDraftDrugOrder = OpenMRS.createEmptyDraftDrugOrder(orderContext);
+                $scope.draftTestOrders = [];
+                $scope.newDraftTestOrder = OpenMRS.createEmptyDraftTestOrder(orderContext);
                 $location.search({ patient: config.patient.uuid, careSetting: careSetting.uuid });
             }
 
@@ -150,15 +149,11 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             // functions that affect the new order being written
 
             $scope.addNewDraftOrder = function() {
-                // Set quantity & units
-                $scope.newDraftDrugOrder.quantity = $scope.newDraftDrugOrder.dose * $scope.newDraftDrugOrder.duration;
-                $scope.newDraftDrugOrder.quantityUnits = $scope.newDraftDrugOrder.doseUnits;
-                if ($scope.newDraftDrugOrder.getDosingType().validate($scope.newDraftDrugOrder)) {
-                    $scope.newDraftDrugOrder.asNeeded = $scope.newDraftDrugOrder.asNeededCondition ? true : false;
-                    $scope.draftDrugOrders.push($scope.newDraftDrugOrder);
-                    $scope.newDraftDrugOrder = OpenMRS.createEmptyDraftDrugOrder(orderContext);
+                if ($scope.newDraftTestOrder.getDosingType().validate($scope.newDraftTestOrder)) {
+                    $scope.newDraftTestOrder.asNeeded = $scope.newDraftTestOrder.asNeededCondition ? true : false;
+                    $scope.draftTestOrders.push($scope.newDraftTestOrder);
+                    $scope.newDraftTestOrder = OpenMRS.createEmptyDraftTestOrder(orderContext);
                     $scope.newOrderForm.$setPristine();
-                    // TODO upgrade to angular 1.3 and work on form validation
                     $scope.newOrderForm.$setUntouched();
                 } else {
                     emr.errorMessage("Invalid");
@@ -166,32 +161,32 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             }
 
             $scope.cancelNewDraftOrder = function() {
-                $scope.newDraftDrugOrder = OpenMRS.createEmptyDraftDrugOrder(orderContext);
+                $scope.newDraftTestOrder = OpenMRS.createEmptyDraftTestOrder(orderContext);
             }
 
 
             // functions that affect the shopping cart of orders written but not yet saved
 
             $scope.cancelAllDraftDrugOrders = function() {
-                $scope.draftDrugOrders = [];
+                $scope.draftTestOrders = [];
             }
 
             $scope.cancelDraftDrugOrder = function(draftDrugOrder) {
-                $scope.draftDrugOrders = _.without($scope.draftDrugOrders, draftDrugOrder);
+                $scope.draftTestOrders = _.without($scope.draftTestOrders, draftDrugOrder);
             }
 
             $scope.editDraftDrugOrder = function(draftDrugOrder) {
-                $scope.draftDrugOrders = _.without($scope.draftDrugOrders, draftDrugOrder);
-                $scope.newDraftDrugOrder = draftDrugOrder;
+                $scope.draftTestOrders = _.without($scope.draftTestOrders, draftDrugOrder);
+                $scope.newDraftTestOrder = draftDrugOrder;
             }
 
             /**
              * Finds the replacement order for a given active order (e.g. the order that will DC or REVISE it)
              */
             $scope.replacementFor = function(activeOrder) {
-                var lookAt = $scope.newDraftDrugOrder ?
-                    _.union($scope.draftDrugOrders, [$scope.newDraftDrugOrder]) :
-                    $scope.draftDrugOrders;
+                var lookAt = $scope.newDraftTestOrder ?
+                    _.union($scope.draftTestOrders, [$scope.newDraftTestOrder]) :
+                    $scope.draftTestOrders;
                 return _.findWhere(lookAt, { previousOrder: activeOrder });
             }
 
@@ -212,7 +207,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                 };
 
                 $scope.loading = true;
-                OrderEntryService.signAndSave({ draftOrders: $scope.draftDrugOrders }, encounterContext)
+                OrderEntryService.signAndSave({ draftOrders: $scope.draftTestOrders }, encounterContext)
                     .$promise.then(function(result) {
                         location.href = location.href;
                     }, function(errorResponse) {
@@ -226,12 +221,18 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
 
             $scope.discontinueOrder = function(activeOrder) {
                 var dcOrder = activeOrder.createDiscontinueOrder(orderContext);
-                $scope.draftDrugOrders.push(dcOrder);
+                $scope.draftTestOrders.push(dcOrder);
                 $scope.$broadcast('added-dc-order', dcOrder);
             }
 
             $scope.reviseOrder = function(activeOrder) {
-                $scope.newDraftDrugOrder = activeOrder.createRevisionOrder();
+                $scope.newDraftTestOrder = activeOrder.createRevisionOrder();
+            }
+
+            $scope.orderableConcepts = [];
+            $scope.searchConcepts = function(search) {
+                var params = search ? { term: search } : {};
+                return OrderEntryService.getOrderableTests(params);
             }
 
             $scope.encounterRoles = [];
