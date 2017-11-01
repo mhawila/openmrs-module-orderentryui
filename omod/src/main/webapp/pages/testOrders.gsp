@@ -5,7 +5,7 @@
     ui.includeJavascript("uicommons", "angular-app.js")
     ui.includeJavascript("uicommons", "angular-resource.min.js")
     ui.includeJavascript("uicommons", "angular-common.js")
-    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.11.2.js")
+    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.13.0.js")
     ui.includeJavascript("uicommons", "ngDialog/ngDialog.js")
     ui.includeJavascript("uicommons", "filters/display.js")
     ui.includeJavascript("uicommons", "filters/serverDate.js")
@@ -24,6 +24,8 @@
     ui.includeJavascript("orderentryui", "select.min.js")
 
     ui.includeCss("uicommons", "ngDialog/ngDialog.min.css")
+    ui.includeCss("orderentryui", "bootstrap-datepicker-3.3.7.min.css")
+    ui.includeCss("uicommons", "datetimepicker.css")
     ui.includeCss("orderentryui", "drugOrders.css")
     ui.includeCss("orderentryui", "select.min.css")
     ui.includeCss("orderentryui", "selectize.default.min.css")
@@ -58,6 +60,25 @@
       position: relative;
       z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
     }
+
+    .date-range-picker-div {
+      display: inline-block;
+    }
+
+    .date-range-picker-clear-link {
+      font-size: 12px;
+      margin-right: 15px;
+    }
+
+    .date-range-picker-div .angular-datepicker .icon-calendar {
+      vertical-align: middle;
+    }
+
+    @font-face {
+        font-family: 'Glyphicons Halflings';
+            src: url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.eot") }');
+              src: url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.eot?#iefix")}') format('embedded-opentype'), url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.woff2")}') format('woff2'), url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.woff")}') format('woff'), url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.ttf")}') format('truetype")}, url('${ ui.resourceLink("orderentryui", "styles/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular")}') format('svg');
+    }
 </style>
 
 ${ ui.includeFragment("appui", "messages", [ codes: [
@@ -68,16 +89,6 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
 ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
 
 <div id="test-orders-app" ng-controller="TestOrdersCtrl" ng-init='init()'>
-    <div class="ui-tabs">
-        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
-            <li ng-repeat="setting in careSettings" class="ui-state-default ui-corner-top"
-                ng-class="{ 'ui-tabs-active': setting == careSetting, 'ui-state-active': setting == careSetting }">
-                    <a class="ui-tabs-anchor" ng-click="setCareSetting(setting)">
-                        {{ setting | omrsDisplay }}
-                    </a>
-            </li>
-        </ul>
-
         <div class="ui-tabs-panel ui-widget-content">
 
             <form id="new-order" class="sized-inputs css-form" name="newOrderForm" novalidate>
@@ -94,12 +105,17 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     </strong>
                 </p>
                 <p>
-                    <label>Date Scheduled:</label>
+                     <label>Date Scheduled:</label>
+
+                    <div class="date-range-picker-div inlineBox">
                     <span class="angular-datepicker">
-                        <input type="text" is-open="startDateOptions.opened" ng-model="startDate" min="{{startDateMin}}" max="endDate" show-weeks="false" datepicker-popup="dd MMM yyyy" readonly/>
-                        <i class="icon-calendar small add-on" ng-click="startDateOptions.open(\$event)" ></i>
-                        <a class="date-range-picker-clear-link add-on" ng-click="startDateOptions.clear($event)">{{ clearLinkText }}</a>
-                    </span>
+                      <input type="text" datepicker-popup="dd MMM yyyy" ng-model="newDraftTestOrder.scheduledDate"
+                        is-open="scheduledDatepicker.opened" datepicker-options="scheduledDatepicker.options" ng-required="true" close-text="Close"
+                        alt-input-formats="scheduledDatepicker.altInputFormats"/>
+                        <i class="icon-calendar small add-on" ng-click="scheduledDatepicker.open(\$event)" ></i>
+                      </span>
+                    </div>
+
                 </p>
                 <p ng-show="newDraftTestOrder.concept">
                     <button type="submit" class="confirm right" ng-disabled="newOrderForm.\$invalid" ng-click="addNewDraftOrder()">Add</button>

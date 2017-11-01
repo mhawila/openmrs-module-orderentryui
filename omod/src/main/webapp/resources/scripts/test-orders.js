@@ -58,11 +58,35 @@ angular.module('testOrders', ['orderService', 'encounterService', 'encounterRole
     }]).
 
     controller('TestOrdersCtrl', ['$scope', '$window', '$location', '$timeout', 'OrderService', 'EncounterService',
-        'EncounterRoleService', 'SessionInfo', 'OrderEntryService', '$sce', function($scope, $window, $location, $timeout,
-                         OrderService, EncounterService, EncounterRoleService, SessionInfo, OrderEntryService, $sce) {
+        'EncounterRoleService', 'SessionInfo', 'OrderEntryService', '$sce', '$filter', function($scope, $window,
+        $location, $timeout, OrderService, EncounterService, EncounterRoleService, SessionInfo, OrderEntryService,
+        $sce, $filter) {
             $scope.encounterRole = {
                 selected: undefined,
             };
+
+            $scope.scheduledDatepicker = {
+                opened: false,
+                options: {
+                    dateDisabled: function (data) {
+                        var date = data.date,
+                            mode = data.mode;
+                        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+                    },
+                    formatYear: 'yy',
+                    minDate: $filter('date')(new Date(), 'YYYY-MM-dd'),
+                    startingDay: 1,
+                    showWeeks: false,
+                    datepickerMode: 'month',
+                },
+                open: function($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.scheduledDatepicker.opened = true;
+                },
+                altInputFormats: ['d!/M!/yyyy']
+            };
+
             var orderContext = {};
             SessionInfo.get().$promise.then(function(info) {
                 orderContext.provider = info.currentProvider;
