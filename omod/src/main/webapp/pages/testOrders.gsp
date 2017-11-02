@@ -101,7 +101,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                                         ng-required="true" size="40" typeahead-wait-ms="20" typeahead-min-length="3"/>
                     </span>
                     <strong ng-show="newDraftTestOrder.action === 'REVISE'">
-                        Revised order for: {{ newDraftTestOrder.concept.conceptName.name }}
+                        Revised order for: {{ newDraftTestOrder.concept.display }}
                     </strong>
                 </p>
 
@@ -177,6 +177,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                 </div>
             </div>
 
+        <div>
             <h3>Active Lab Orders</h3>
             <span ng-show="activeTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
             <span ng-hide="activeTestOrders.loading || activeTestOrders.length > 0">None</span>
@@ -201,7 +202,8 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     </td>
                 </tr>
             </table>
-
+        </div>
+        <div>
             <h3>Past Lab Orders</h3>
             <span ng-show="pastTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
             <span ng-hide="pastTestOrders.loading || pastTestOrders.length > 0">None</span>
@@ -218,6 +220,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     </td>
                 </tr>
             </table>
+        </div>
         </div>
     </div>
 

@@ -39,7 +39,8 @@ angular.module('testOrders', ['orderService', 'encounterService', 'encounterRole
                     return "Discontinue " + (order.drug ? order.drug : order.concept ).display;
                 }
                 if(order.type == 'testorder') {
-                    return "Discontinue" + order.concept.conceptName.name;
+                    return "Discontinue" + (order.concept.conceptName ? order.concept.conceptName.name
+                                                                                        : order.concept.display);
                 }
             }
             else {
@@ -51,7 +52,7 @@ angular.module('testOrders', ['orderService', 'encounterService', 'encounterRole
                     return text;
                 }
                 if(order.type == 'testorder') {
-                    var text = order.concept.conceptName.name;
+                    var text = order.concept.conceptName ? order.concept.conceptName.name : order.concept.display;
                     if(angular.isDefined(order.scheduledDate)) {
                         text += ", scheduled on " + $filter('date')(order.scheduledDate, 'dd/MMM/yyyy');
                     }
@@ -171,6 +172,9 @@ angular.module('testOrders', ['orderService', 'encounterService', 'encounterRole
             // functions that affect the new order being written
 
             $scope.addNewDraftOrder = function() {
+                if($scope.newDraftTestOrder.concept.conceptName) {
+                    $scope.newDraftTestOrder.concept.display = $scope.newDraftTestOrder.concept.conceptName.name;
+                }
                 $scope.draftTestOrders.push($scope.newDraftTestOrder);
                 $scope.newDraftTestOrder = OpenMRS.createEmptyDraftTestOrder(orderContext);
                 $scope.newOrderForm.$setPristine();
