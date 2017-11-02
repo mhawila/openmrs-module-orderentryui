@@ -31,11 +31,11 @@ public class ActiveTestOrdersFragmentController {
             patient = (Patient) (pt instanceof Patient ? pt : PropertyUtils.getProperty(pt, "patient"));
         }
 
-        OrderType drugOrders = orderService.getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
-        List<Order> activeDrugOrders = orderService.getActiveOrders(patient, drugOrders, null, null);
+        OrderType testOrders = orderService.getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
+        List<Order> activeTestOrders = orderService.getActiveOrders(patient, testOrders, null, null);
 
         model.addAttribute("patient", patient);
-        model.addAttribute("activeDrugOrders", activeDrugOrders);
+        model.addAttribute("activeTestOrders", activeTestOrders);
     }
 
 }

@@ -1,5 +1,5 @@
 <%
-    def careSettings = activeDrugOrders.collect{it.careSetting}.unique()
+    def careSettings = activeTestOrders.collect{it.careSetting}.unique()
 %>
 
 <style type="text/css">
@@ -23,24 +23,23 @@
         <% } %>
     </div>
 
-    <!--<div class="info-body active-drug-orders">
-        <% if (!activeDrugOrders) { %>
+    <div class="info-body active-drug-orders">
+        <% if (!activeTestOrders) { %>
             ${ ui.message("emr.none") }
         <% } else { %>
 
             <% careSettings.each { careSetting -> %>
                 <h4>${ ui.format(careSetting) }</h4>
                 <ul>
-                    <% activeDrugOrders.findAll{ it.careSetting == careSetting }.each { %>
+                    <% activeTestOrders.findAll{ it.careSetting == careSetting }.each { %>
                     <li>
-                        <label>${ ui.format(it.drug ?: it.concept) }</label>
-                        <small>${ it.dosingInstructionsInstance.getDosingInstructionsAsString(sessionContext.locale) }</small>
+                        <label>${ ui.format(it.concept) }</label>
+                        <small><strong>Scheduled for: </strong>${ ui.formatDatePretty(it.scheduledDate) }</small>
                     </li>
                     <% } %>
                 </ul>
             <% } %>
         <% } %>
-    </div>-->
-    <div class="info-body"><p> Under construction</p></div>
+    </div>
 
 </div>
