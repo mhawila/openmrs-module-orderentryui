@@ -70,10 +70,9 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
 <div id="drug-orders-app" ng-controller="DrugOrdersCtrl" ng-init='init()'>
     <div class="ui-tabs">
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
-            <li ng-repeat="setting in careSettings" class="ui-state-default ui-corner-top"
-                ng-class="{ 'ui-tabs-active': setting == careSetting, 'ui-state-active': setting == careSetting }">
-                    <a class="ui-tabs-anchor" ng-click="setCareSetting(setting)">
-                        {{ setting | omrsDisplay }}
+            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+                    <a class="ui-tabs-anchor">
+                        Drug Orders
                     </a>
             </li>
         </ul>
@@ -126,13 +125,6 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     <span ng-if="newDraftDrugOrder.dosingType == 'org.openmrs.FreeTextDosingInstructions'">
                         <textarea ng-model="newDraftDrugOrder.dosingInstructions" rows="4" cols="60" placeholder="Complete instructions"></textarea>
                     </span>
-                </p>
-
-                <p ng-if="newDraftDrugOrder.drug && careSetting.careSettingType == 'OUTPATIENT'">
-                    <label class="heading">For outpatient orders</label>
-                    Dispense:
-                    <input ng-model="newDraftDrugOrder.quantity" type="number" min="0" placeholder="Quantity" required/>
-                    <select-concept-from-list ng-model="newDraftDrugOrder.quantityUnits" concepts="quantityUnits" placeholder="Units" size="8"></select-concept-from-list>
                 </p>
 
                 <p ng-show="newDraftDrugOrder.drug">
