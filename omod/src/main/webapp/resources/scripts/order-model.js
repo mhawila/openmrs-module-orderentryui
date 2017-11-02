@@ -187,7 +187,46 @@
     };
 
     OpenMRS.TestOrderModel.prototype = {
-        constructor: OpenMRS.TestOrderModel
+        constructor: OpenMRS.TestOrderModel,
+
+        isActive: function() {
+            var now = moment();
+            return !this.dateStopped &&
+                this.action !== "DISCONTINUE" &&
+                this.dateActivated && (now.isAfter(this.dateActivated) || now.isSame(this.dateActivated)) &&
+                (!this.autoExpireDate || now.isAfter(this.autoExpireDate) || now.isSame(this.autoExpireDate));
+        },
+
+        createDiscontinueOrder: function(orderContext) {
+            return new OpenMRS.TestOrderModel({
+                action: 'DISCONTINUE',
+                type: 'testorder',
+                careSetting: this.careSetting,
+                orderer: orderContext.provider,
+                concept: this.concept,
+                specimen: this.specimen,
+                previousOrder: this,
+                orderReasonNonCoded: ''
+            });
+        },
+
+        createRevisionOrder: function(orderContext) {
+            var draft = OpenMRS.createEmptyDraftTestOrder(this.careSetting);
+            var copyProperties = _.pick(this,
+                'commentToFulfiller', 'concept', 'specimen', 'numRefills', 'asNeeded', 'asNeededCondition', 'careSetting'
+            );
+            if (orderContext && orderContext.config) {
+                replaceWithReferenceData(copyProperties, 'concept', orderContext.config.concept);
+                replaceWithReferenceData(copyProperties, 'specimen', orderContext.config.specimen);
+                replaceWithReferenceData(copyProperties, 'scheduledDate', orderContext.config.scheduledDate);
+            }
+            var override = {
+                action: 'REVISE',
+                previousOrder: this
+            };
+            $.extend(draft, copyProperties, override);
+            return draft;
+        },
     };
 
     OpenMRS.newTestOrder = function(orderContext) {
@@ -208,9 +247,10 @@
             careSetting: orderContext.careSetting,
             orderer: orderContext.provider,
             commentToFulfiller: '',
-            concept: '',
-            specimen: '',
+            concept: undefined,
+            specimen: undefined,
             scheduledDate: new Date(),
+            urgency: 'ON_SCHEDULED_DATE',
             previousOrder: null
         });
         return new OpenMRS.TestOrderModel(obj);

@@ -38,7 +38,7 @@
         { label: "Lab Orders" }
     ]
     window.OpenMRS = window.OpenMRS || {};
-    window.OpenMRS.drugOrdersConfig = ${ jsonConfig };
+    window.OpenMRS.testOrdersConfig = ${ jsonConfig };
 </script>
 <style>
     .select2 > .select2-choice.ui-select-match {
@@ -104,8 +104,18 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                         Revised order for: {{ newDraftTestOrder.concept.conceptName.name }}
                     </strong>
                 </p>
-                <p>
-                     <label>Date Scheduled:</label>
+
+                <span ng-show="newDraftTestOrder.concept">
+                   <!-- Don't deal with specimen yet <p>
+                        <label>Specimen:</label>
+                        <input type="text" id="order-concept" ng-model="newDraftTestOrder.specimen"
+                                        typeahead="concept as concept.conceptName.name for concept in searchConcepts(\$viewValue)"
+                                        typeahead-editable="false" autocomplete="off" placeholder="Optional specimen source..."
+                                        size="40" typeahead-wait-ms="20" typeahead-min-length="3"/>
+                    </p>-->
+
+                    <p>
+                    <label>Date Scheduled:</label>
 
                     <div class="date-range-picker-div inlineBox">
                     <span class="angular-datepicker">
@@ -115,12 +125,12 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                         <i class="icon-calendar small add-on" ng-click="scheduledDatepicker.open(\$event)" ></i>
                       </span>
                     </div>
-
-                </p>
-                <p ng-show="newDraftTestOrder.concept">
+                    </p>
+                    <p>
                     <button type="submit" class="confirm right" ng-disabled="newOrderForm.\$invalid" ng-click="addNewDraftOrder()">Add</button>
                     <button class="cancel" ng-click="cancelNewDraftOrder()">Cancel</button>
-                </p>
+                    </p>
+                </span>
             </form>
 
             <div id="draft-orders" ng-show="draftTestOrders.length > 0">
@@ -139,8 +149,8 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                             </span>
                         </td>
                         <td class="actions">
-                            <a ng-click="editDraftDrugOrder(order)"><i class="icon-pencil edit-action"></i></a>
-                            <a ng-click="cancelDraftDrugOrder(order)"><i class="icon-remove delete-action"></i></a>
+                            <a ng-click="editDraftTestOrder(order)"><i class="icon-pencil edit-action"></i></a>
+                            <a ng-click="cancelDraftTestOrder(order)"><i class="icon-remove delete-action"></i></a>
                         </td>
                     </tr>
                 </table>
@@ -160,19 +170,18 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     </ui-select>
                 </div>
                 <div class="actions">
-                    <button class="confirm right" ng-disabled="loading || !encounterRole.selected" ng-click="signAndSaveDraftDrugOrders()">Sign and Save</button>
-                    <button class="cancel" ng-click="cancelAllDraftDrugOrders()">
+                    <button class="confirm right" ng-disabled="loading || !encounterRole.selected" ng-click="signAndSaveDraftTestOrders()">Sign and Save</button>
+                    <button class="cancel" ng-click="cancelAllDraftTestOrders()">
                         {{ draftTestOrders.length > 1 ? "Discard All" : "Discard" }}
                     </button>
                 </div>
             </div>
 
-            <!--
-            <h3>Active Drug Orders</h3>
-            <span ng-show="activeDrugOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
-            <span ng-hide="activeDrugOrders.loading || activeDrugOrders.length > 0">None</span>
-            <table ng-hide="activeDrugOrders.loading">
-                <tr ng-repeat="order in activeDrugOrders">
+            <h3>Active Lab Orders</h3>
+            <span ng-show="activeTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
+            <span ng-hide="activeTestOrders.loading || activeTestOrders.length > 0">None</span>
+            <table ng-hide="activeTestOrders.loading">
+                <tr ng-repeat="order in activeTestOrders">
                     <td ng-class="{ 'will-replace': replacementFor(order) }">
                         {{ order | dates }}
                     </td>
@@ -193,11 +202,11 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                 </tr>
             </table>
 
-            <h3>Past Drug Orders</h3>
-            <span ng-show="pastDrugOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
-            <span ng-hide="pastDrugOrders.loading || pastDrugOrders.length > 0">None</span>
-            <table id="past-drug-orders" ng-hide="pastDrugOrders.loading">
-                <tr ng-repeat="order in pastDrugOrders">
+            <h3>Past Lab Orders</h3>
+            <span ng-show="pastTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
+            <span ng-hide="pastTestOrders.loading || pastTestOrders.length > 0">None</span>
+            <table id="past-drug-orders" ng-hide="pastTestOrders.loading">
+                <tr ng-repeat="order in pastTestOrders">
                     <td>
                         {{ replacementForPastOrder(order) | replacement }}
                     </td>
@@ -209,7 +218,6 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                     </td>
                 </tr>
             </table>
-            -->
         </div>
     </div>
 
