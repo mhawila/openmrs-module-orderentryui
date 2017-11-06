@@ -89,6 +89,15 @@ ${ ui.includeFragment("appui", "messages", [ codes: [
 ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
 
 <div id="test-orders-app" ng-controller="TestOrdersCtrl" ng-init='init()'>
+    <div class="ui-tabs">
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
+            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+                    <a class="ui-tabs-anchor">
+                        Laboratory Orders
+                    </a>
+            </li>
+        </ul>
+
         <div class="ui-tabs-panel ui-widget-content">
 
             <form id="new-order" class="sized-inputs css-form" name="newOrderForm" novalidate>

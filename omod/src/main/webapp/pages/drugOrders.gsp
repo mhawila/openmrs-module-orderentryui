@@ -72,7 +72,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
             <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
                     <a class="ui-tabs-anchor">
-                        Drug Orders
+                        Prescription Orders
                     </a>
             </li>
         </ul>
