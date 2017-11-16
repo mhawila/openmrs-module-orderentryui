@@ -29,7 +29,6 @@
         <% } else { %>
 
             <% careSettings.each { careSetting -> %>
-                <h4>${ ui.format(careSetting) }</h4>
                 <ul>
                     <% activeTestOrders.findAll{ it.careSetting == careSetting }.each { %>
                     <li>

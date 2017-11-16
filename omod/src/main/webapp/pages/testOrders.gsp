@@ -93,7 +93,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header">
             <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
                     <a class="ui-tabs-anchor">
-                        Laboratory Orders
+                        Test Orders
                     </a>
             </li>
         </ul>
@@ -103,7 +103,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
             <form id="new-order" class="sized-inputs css-form" name="newOrderForm" novalidate>
                 <p>
                     <span ng-show="newDraftTestOrder.action === 'NEW'">
-                        <label>New lab order for:</label>
+                        <label>New test order for:</label>
                         <input type="text" id="order-concept" ng-model="newDraftTestOrder.concept"
                                         typeahead="concept as concept.conceptName.name for concept in searchConcepts(\$viewValue)"
                                         typeahead-editable="false" autocomplete="off" placeholder="Test..."
@@ -187,7 +187,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
             </div>
 
         <div>
-            <h3>Active Lab Orders</h3>
+            <h3>Existing Orders</h3>
             <span ng-show="activeTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
             <span ng-hide="activeTestOrders.loading || activeTestOrders.length > 0">None</span>
             <table ng-hide="activeTestOrders.loading">
@@ -213,7 +213,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
             </table>
         </div>
         <div>
-            <h3>Past Lab Orders</h3>
+            <h3>Revised/Discontinued Orders</h3>
             <span ng-show="pastTestOrders.loading">${ ui.message("uicommons.loading.placeholder") }</span>
             <span ng-hide="pastTestOrders.loading || pastTestOrders.length > 0">None</span>
             <table id="past-drug-orders" ng-hide="pastTestOrders.loading">
