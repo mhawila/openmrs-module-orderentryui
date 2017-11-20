@@ -232,6 +232,11 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                     if (!transformed.orderer) {
                         transformed.orderer = provider.uuid;
                     }
+
+                    if(typeof transformed.drug === 'object') {
+                        transformed.drugNonCoded = transformed.drug.nonCodedValue;
+                        delete transformed.drug;
+                    }
                     delete transformed.editing;
                     return transformed;
                 });

@@ -150,6 +150,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             // functions that affect the new order being written
 
             $scope.addNewDraftOrder = function() {
+                // check if the drug is non coded.
                 // Set quantity & units
                 $scope.newDraftDrugOrder.quantity = $scope.newDraftDrugOrder.dose * $scope.newDraftDrugOrder.duration;
                 $scope.newDraftDrugOrder.quantityUnits = $scope.newDraftDrugOrder.doseUnits;

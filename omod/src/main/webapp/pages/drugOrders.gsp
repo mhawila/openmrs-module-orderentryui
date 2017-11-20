@@ -83,14 +83,14 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                 <p>
                     <span ng-show="newDraftDrugOrder.action === 'NEW'">
                         <label>New order for:</label>
-                        <select-drug ng-model="newDraftDrugOrder.drug" placeholder="Drug" size="40"></select-drug>
+                        <select-drug ng-model="newDraftDrugOrder.drug" placeholder="Drug" size="40" support-free-text></select-drug>
                     </span>
                     <strong ng-show="newDraftDrugOrder.action === 'REVISE'">
                         Revised order for: {{ newDraftDrugOrder.drug.display }}
                     </strong>
                 </p>
 
-                <p ng-show="newDraftDrugOrder.drug">
+                <p ng-show="newDraftDrugOrder.drug || newDraftDrugOrder.drugNonCoded">
                     <label class="heading instructions">
                         <span>Instructions</span>
                         <a ng-repeat="dosingType in dosingTypes" tabindex="-1"
