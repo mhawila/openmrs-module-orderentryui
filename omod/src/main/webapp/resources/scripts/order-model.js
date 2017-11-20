@@ -108,6 +108,7 @@
             orderer: orderContext.provider,
             commentToFulfiller: '',
             drug: '',
+            dateActivated: new Date(),
             dosingType: 'org.openmrs.SimpleDosingInstructions',
             numRefills: 0,
             quantity: null,

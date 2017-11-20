@@ -69,6 +69,27 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                 $scope.newDraftDrugOrder = OpenMRS.createEmptyDraftDrugOrder(orderContext);
             });
 
+            $scope.dateActivatedPicker = {
+                opened: false,
+                options: {
+                    dateDisabled: function (data) {
+                        var date = data.date,
+                            mode = data.mode;
+                        return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+                    },
+                    formatYear: 'yy',
+                    startingDay: 1,
+                    showWeeks: false,
+                    datepickerMode: 'month',
+                },
+                open: function($event) {
+                    $event.preventDefault();
+                    $event.stopPropagation();
+                    $scope.dateActivatedPicker.opened = true;
+                },
+                altInputFormats: ['d!/M!/yyyy']
+            };
+
             // TODO changing dosingType of a draft order should reset defaults (and discard non-defaulted properties)
 
             function loadExistingOrders() {
