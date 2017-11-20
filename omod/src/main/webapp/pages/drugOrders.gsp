@@ -5,7 +5,7 @@
     ui.includeJavascript("uicommons", "angular-app.js")
     ui.includeJavascript("uicommons", "angular-resource.min.js")
     ui.includeJavascript("uicommons", "angular-common.js")
-    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.11.2.js")
+    ui.includeJavascript("uicommons", "angular-ui/ui-bootstrap-tpls-0.13.0.js")
     ui.includeJavascript("uicommons", "ngDialog/ngDialog.js")
     ui.includeJavascript("uicommons", "filters/display.js")
     ui.includeJavascript("uicommons", "filters/serverDate.js")
@@ -24,6 +24,8 @@
     ui.includeJavascript("orderentryui", "select.min.js")
 
     ui.includeCss("uicommons", "ngDialog/ngDialog.min.css")
+    ui.includeCss("orderentryui", "bootstrap-datepicker-3.3.7.min.css")
+    ui.includeCss("uicommons", "datetimepicker.css")
     ui.includeCss("orderentryui", "drugOrders.css")
     ui.includeCss("orderentryui", "select.min.css")
     ui.includeCss("orderentryui", "selectize.default.min.css")
@@ -137,6 +139,18 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                         <input ng-model="newDraftDrugOrder.quantity" type="number" placeholder="Quantity" min="0" size="10" required/>
                         <select-concept-from-list ng-model="newDraftDrugOrder.quantityUnits" concepts="quantityUnits" placeholder="Units" size="10" required></select-concept-from-list>
                     </span>
+                </p>
+
+                <p>
+                    <div class="date-range-picker-div inlineBox" ng-show="newDraftDrugOrder.drug">
+                        <span class="angular-datepicker">
+                            <label>Date Activated:</label>
+                            <input type="text" datepicker-popup="dd MMM yyyy" ng-model="newDraftDrugOrder.dateActivated"
+                                   is-open="dateActivatedPicker.opened" datepicker-options="dateActivatedPicker.options" ng-required="true" close-text="Close"
+                                   alt-input-formats="dateActivatedPicker.altInputFormats"/>
+                            <i class="icon-calendar small add-on" ng-click="dateActivatedPicker.open(\$event)" ></i>
+                        </span>
+                    </div>
                 </p>
 
                 <p ng-show="newDraftDrugOrder.drug">
