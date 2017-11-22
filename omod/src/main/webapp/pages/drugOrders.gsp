@@ -28,7 +28,7 @@
     ui.includeCss("orderentryui", "select.min.css")
     ui.includeCss("orderentryui", "selectize.default.min.css")
 %>
-<script type="text/javascript">
+<script type="text/javascript" xmlns="http://www.w3.org/1999/html">
     var breadcrumbs = [
         { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
         { label: "${ ui.format(patient.familyName) }, ${ ui.format(patient.givenName) }" ,
@@ -80,6 +80,12 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
         <div class="ui-tabs-panel ui-widget-content">
 
             <form id="new-order" class="sized-inputs css-form" name="newOrderForm" novalidate>
+                <p>
+                    <span ng-repeat="setting in careSettings">
+                        <input  type="radio" name="careSetting" ng-model="careSetting"
+                                ng-value="setting" ng-click="setCareSetting(setting)"/>{{ setting | omrsDisplay }}<br/>
+                    </span>
+                </p>
                 <p>
                     <span ng-show="newDraftDrugOrder.action === 'NEW'">
                         <label>New order for:</label>

@@ -146,7 +146,6 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                 $location.search({ patient: config.patient.uuid, careSetting: careSetting.uuid });
             }
 
-
             // functions that affect the new order being written
 
             $scope.addNewDraftOrder = function() {

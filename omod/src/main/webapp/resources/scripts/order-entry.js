@@ -1,5 +1,9 @@
 angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
-
+    .config(function() {
+        emr.loadGlobalProperties(['drugOrder.drugOther'], function(results) {
+            OpenMRS.drugOtherConceptUuid = results['drugOrder.drugOther'];
+        });
+    })
     .factory("CareSetting", [ "$resource", function($resource) {
         return $resource("/" + OPENMRS_CONTEXT_PATH  + "/ws/rest/v1/caresetting/:uuid", {
         },{
@@ -235,6 +239,7 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
 
                     if(typeof transformed.drug === 'object') {
                         transformed.drugNonCoded = transformed.drug.nonCodedValue;
+                        transformed.concept = OpenMRS.drugOtherConceptUuid;
                         delete transformed.drug;
                     }
                     delete transformed.editing;
