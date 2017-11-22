@@ -149,10 +149,12 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             // functions that affect the new order being written
 
             $scope.addNewDraftOrder = function() {
-                // check if the drug is non coded.
                 // Set quantity & units
-                $scope.newDraftDrugOrder.quantity = $scope.newDraftDrugOrder.dose * $scope.newDraftDrugOrder.duration;
-                $scope.newDraftDrugOrder.quantityUnits = $scope.newDraftDrugOrder.doseUnits;
+                if($scope.newDraftDrugOrder.dosingType !== 'org.openmrs.FreeTextDosingInstructions') {
+                    $scope.newDraftDrugOrder.quantity = $scope.newDraftDrugOrder.dose * $scope.newDraftDrugOrder.duration;
+                    $scope.newDraftDrugOrder.quantityUnits = $scope.newDraftDrugOrder.doseUnits;
+                }
+                console.log($scope.newDraftDrugOrder);
                 if ($scope.newDraftDrugOrder.getDosingType().validate($scope.newDraftDrugOrder)) {
                     $scope.newDraftDrugOrder.asNeeded = $scope.newDraftDrugOrder.asNeededCondition ? true : false;
                     $scope.draftDrugOrders.push($scope.newDraftDrugOrder);
