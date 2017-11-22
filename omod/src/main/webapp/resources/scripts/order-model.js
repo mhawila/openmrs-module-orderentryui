@@ -87,7 +87,11 @@
                 return order.dosingInstructions;
             },
             format: function(order) {
-                return order.drug.display + ": \"" + order.dosingInstructions + "\"";
+                var drug = order.drug ? order.drug.display : order.drugNonCoded;
+                if(order.drugNonCoded) {
+                    drug += ' (non coded)';
+                }
+                return drug + ": \"" + order.dosingInstructions + "\"";
             }
         }
     ];

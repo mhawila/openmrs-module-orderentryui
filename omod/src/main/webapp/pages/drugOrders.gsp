@@ -135,7 +135,7 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
 
                     <span ng-if="newDraftDrugOrder.dosingType == 'org.openmrs.FreeTextDosingInstructions' && careSetting.careSettingType == 'OUTPATIENT'">
                         <input ng-model="newDraftDrugOrder.quantity" type="number" placeholder="Quantity" min="0" size="10" required/>
-                        <select-concept-from-list ng-model="newDraftDrugOrder.quantityUnits" concepts="quantityUnits" placeholder="Units" size="5" required></select-concept-from-list>
+                        <select-concept-from-list ng-model="newDraftDrugOrder.quantityUnits" concepts="quantityUnits" placeholder="Units" size="10" required></select-concept-from-list>
                     </span>
                 </p>
 
