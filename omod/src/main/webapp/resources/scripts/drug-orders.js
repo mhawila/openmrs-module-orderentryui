@@ -35,7 +35,18 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                 return "";
             }
             if (order.action == 'DISCONTINUE') {
-                return "Discontinue " + (order.drug ? order.drug : order.concept ).display;
+                var drug = '';
+                if(order.drug) {
+                    drug = order.drug.display;
+                }
+                else if(order.drugNonCoded) {
+                    drug = order.drugNonCoded + ' (non coded)';
+                }
+                else if(order.concept) {
+                    drug = order.concept.display;
+                }
+
+                return "Discontinue: " + drug;
             }
             else {
                 var text = order.getDosingType().format(order);

@@ -237,7 +237,7 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                         transformed.orderer = provider.uuid;
                     }
 
-                    if(typeof transformed.drug === 'object') {
+                    if(typeof transformed.drug === 'object' && transformed.drug !== null) {
                         transformed.drugNonCoded = transformed.drug.nonCodedValue;
                         transformed.concept = OpenMRS.drugOtherConceptUuid;
                         delete transformed.drug;

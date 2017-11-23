@@ -35,7 +35,7 @@
                 dosingInstructions: null
             },
             validate: function(order) {
-                var valid = order.drug && order.dose && order.doseUnits && order.frequency && order.route;
+                var valid = (order.drug || order.drugNonCoded) && order.dose && order.doseUnits && order.frequency && order.route;
                 if (order.careSetting.careSettingType === 'OUTPATIENT') {
                     valid = valid && order.quantity && order.quantityUnits;
                 }
@@ -45,7 +45,7 @@
                 order.asNeeded = order.asNeededCondition ? true : false;
             },
             format: function(order) {
-                var str = order.drug.display + ": " +
+                var str = order.drug ? order.drug.display : order.drugNonCoded + ": " +
                     order.dose + " " + order.doseUnits.display + ", " +
                     order.frequency.display + ", " +
                     order.route.display +
@@ -150,6 +150,8 @@
                 careSetting: this.careSetting,
                 orderer: orderContext.provider,
                 drug: this.drug,
+                drugNonCoded: this.drugNonCoded,
+                concept: this.concept,
                 previousOrder: this,
                 orderReasonNonCoded: ''
             });
