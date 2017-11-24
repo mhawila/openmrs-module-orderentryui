@@ -144,6 +144,23 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
             return obj ? obj.uuid : null;
         }
 
+        function compareDates(first, second) {
+            var f = null, s = null;
+            if(!(first instanceof Date) && typeof first === 'string') {
+                f = new Date(first);
+            }
+
+            if(!(second instanceof Date) && typeof second === 'string') {
+                s = new Date(second);
+            }
+
+            if(!(f instanceof Date) || (s instanceof Date)) {
+                throw new Error('One or both date parameters is/are invalid first: ' + first + ' and second: ' + second);
+            }
+
+            return f.getTime() - s.getTime();
+        }
+
         return {
             getOrderableTests: function(params) {
                 return $resource("/" + OPENMRS_CONTEXT_PATH  + "/orderentryui/orderable/search.action")
@@ -224,6 +241,8 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                         it.getDosingType().cleanup(it);
                     }
                 });
+                // create encounter Date if one or more order is has dateActivated set.
+                var encounterDatetime = null;
                 var orders = _.map(orderContext.draftOrders, function(order) {
                     var transformed = replaceWithUuids(order, ['drug', 'doseUnits', 'frequency', 'quantityUnits',
                         'durationUnits', 'route', 'previousOrder', 'careSetting', 'patient', 'concept', 'orderer',
@@ -231,6 +250,12 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                     ]);
                     if (!transformed.orderer) {
                         transformed.orderer = provider.uuid;
+                    }
+
+                    if(transformed.dateActivated) {
+                        if(encounterDatetime == null || compareDates(transformed.dateActivated, encounterDatetime) < 0) {
+                            encounterDatetime = transformed.dateActivated;
+                        }
                     }
                     delete transformed.editing;
                     return transformed;
@@ -253,7 +278,10 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                 }
                 // If we don't specify the encounter datetime here, the server will default to now().
                 // (If this is for a past visit with a stopDatetime, this will fail.)
-                if (encounterContext.encounterDatetime) {
+                if(encounterDatetime) {
+                    encounter.encounterDatetime = encounterDatetime;
+                }
+                else if (encounterContext.encounterDatetime) {
                     encounter.encounterDatetime = encounterContext.encounterDatetime;
                 }
 
