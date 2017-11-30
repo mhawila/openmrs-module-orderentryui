@@ -36,7 +36,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
             }
             if (order.action == 'DISCONTINUE') {
                 var drug = '';
-                if(order.drug) {
+                if(order.drug && typeof order.drug === 'object') {
                     drug = order.drug.display;
                 }
                 else if(order.drugNonCoded) {
@@ -92,6 +92,7 @@ angular.module('drugOrders', ['orderService', 'encounterService', 'encounterRole
                     startingDay: 1,
                     showWeeks: false,
                     datepickerMode: 'month',
+                    maxDate: (new Date()).getTime(),
                 },
                 open: function($event) {
                     $event.preventDefault();

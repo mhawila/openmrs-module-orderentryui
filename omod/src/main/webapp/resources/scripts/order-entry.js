@@ -150,15 +150,21 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
 
         function compareDates(first, second) {
             var f = null, s = null;
-            if(!(first instanceof Date) && typeof first === 'string') {
+            if(first instanceof Date) {
+                f = first;
+            }
+            else if(typeof first === 'string') {
                 f = new Date(first);
             }
 
-            if(!(second instanceof Date) && typeof second === 'string') {
+            if(second instanceof Date) {
+                s = second;
+            }
+            else if(typeof second === 'string') {
                 s = new Date(second);
             }
 
-            if(!(f instanceof Date) || (s instanceof Date)) {
+            if(!(f instanceof Date) || !(s instanceof Date)) {
                 throw new Error('One or both date parameters is/are invalid first: ' + first + ' and second: ' + second);
             }
 
@@ -247,6 +253,7 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                 });
                 // create encounter Date if one or more order is has dateActivated set.
                 var encounterDatetime = null;
+                var now = new Date();
                 var orders = _.map(orderContext.draftOrders, function(order) {
                     var transformed = replaceWithUuids(order, ['drug', 'doseUnits', 'frequency', 'quantityUnits',
                         'durationUnits', 'route', 'previousOrder', 'careSetting', 'patient', 'concept', 'orderer',
@@ -263,7 +270,8 @@ angular.module("orderEntry", ['orderService', 'encounterService', 'session'])
                     }
 
                     if(transformed.dateActivated) {
-                        if(encounterDatetime == null || compareDates(transformed.dateActivated, encounterDatetime) < 0) {
+                        if(compareDates(transformed.dateActivated, now) < 0 && (encounterDatetime == null
+                                        || compareDates(transformed.dateActivated, encounterDatetime) < 0)) {
                             encounterDatetime = transformed.dateActivated;
                         }
                     }
