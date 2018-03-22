@@ -123,8 +123,8 @@ ${ ui.includeFragment("coreapps", "patientHeader", [ patient: patient ]) }
                         <br/>
 
                         <label ng-class="{ disabled: !newDraftDrugOrder.duration }">For</label>
-                        <input ng-model="newDraftDrugOrder.duration" type="number" min="0" placeholder="Duration"/>
-                        <select-concept-from-list ng-model="newDraftDrugOrder.durationUnits" concepts="durationUnits" placeholder="Units" size="5" required-if="newDraftDrugOrder.duration"></select-concept-from-list>
+                        <input ng-model="newDraftDrugOrder.duration" type="number" min="0" placeholder="Duration" required/>
+                        <select-concept-from-list ng-model="newDraftDrugOrder.durationUnits" concepts="durationUnits" placeholder="Units" size="5" required></select-concept-from-list>
                         <label ng-class="{ disabled: !newDraftDrugOrder.duration }">total</label>
                         <br/>
                         <textarea ng-model="newDraftDrugOrder.dosingInstructions" rows="2" cols="60" placeholder="Additional instruction not covered above"></textarea>
