@@ -21,8 +21,8 @@
 	</organization>
 
     <scm>
-        <connection>scm:git:git@github.com:openmrs/openmrs-module-orderentryui.git</connection>
-        <developerConnection>scm:git:git@github.com:openmrs/openmrs-module-orderentryui.git</developerConnection>
+        <connection>scm:git:git@github.com:mhawila/openmrs-module-orderentryui.git</connection>
+        <developerConnection>scm:git:git@github.com:mhawila/openmrs-module-orderentryui.git</developerConnection>
         <url>https://github.com/openmrs/openmrs-module-orderentryui</url>
     </scm>
 
