@@ -3,7 +3,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>orderentryui</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Order Entry UI Module</name>
 	<description>Drug Order Entry for OpenMRS 2.x</description>
@@ -24,7 +24,8 @@
         <connection>scm:git:git@github.com:mhawila/openmrs-module-orderentryui.git</connection>
         <developerConnection>scm:git:git@github.com:mhawila/openmrs-module-orderentryui.git</developerConnection>
         <url>https://github.com/openmrs/openmrs-module-orderentryui</url>
-    </scm>
+      <tag>HEAD</tag>
+  </scm>
 
 	<modules>
 		<module>api</module>
